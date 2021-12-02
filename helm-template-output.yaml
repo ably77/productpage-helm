@@ -8,7 +8,7 @@ metadata:
     app: productpage
     chart: productpage-0.1.0
     release: RELEASE-NAME
-    heritage: Tiller
+    heritage: Helm
 spec:
   type: 
   ports:
@@ -19,10 +19,9 @@ spec:
   selector:
     app: productpage
     release: RELEASE-NAME
-
 ---
 # Source: productpage/templates/deployment.yaml
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: RELEASE-NAME-productpage
@@ -31,7 +30,7 @@ metadata:
     canary: "false"
     chart: productpage-0.1.0
     release: RELEASE-NAME
-    heritage: Tiller
+    heritage: Helm
 spec:
   replicas: 2
   selector:
@@ -48,7 +47,7 @@ spec:
     spec:
       containers:
         - name: productpage
-          image: "myacrepo.azurecr.io/bookinfo-canary/productpage:76"
+          image: "ably77/bookinfo-canary:76"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -62,10 +61,9 @@ spec:
             httpGet:
               path: /
               port: http
-
 ---
 # Source: productpage/templates/deploymentcanary.yaml
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: RELEASE-NAME-productpagecanary
@@ -74,7 +72,7 @@ metadata:
     canary: "true"
     chart: productpage-0.1.0
     release: RELEASE-NAME
-    heritage: Tiller
+    heritage: Helm
 spec:
   replicas: 2
   selector:
@@ -91,7 +89,7 @@ spec:
     spec:
       containers:
         - name: productpagecanary
-          image: "myacrepo.azurecr.io/bookinfo-canary/productpage:83"
+          image: "ably77/bookinfo-canary:83"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -105,7 +103,6 @@ spec:
             httpGet:
               path: /
               port: http
-
 ---
 # Source: productpage/templates/istioDestinationRule.yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -127,7 +124,6 @@ spec:
   - name: canary
     labels:
       canary: "true"
-
 ---
 # Source: productpage/templates/istioGateway.yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -158,7 +154,7 @@ metadata:
     release: RELEASE-NAME
 spec:
   hosts:
-  - product-page-svc.bookinfo-k8s-helm-istio-canary.svc.cluster.local
+  - '*'
   gateways:
   - product-page
   http:

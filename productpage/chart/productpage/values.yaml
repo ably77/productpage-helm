@@ -1,3 +1,11 @@
+virtualService:
+  # internal 
+  #host: "<service_name>.<service_namespace>.svc.cluster.local"
+  # external cloudflare
+  #host: "bookinfo.kapoozi.com"
+  # wildcard host
+  host: "'*'"
+
 service:
   name: product-page-svc
   port: 9080
