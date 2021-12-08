@@ -20,14 +20,3 @@
 
 * NEW STEADY STATE : 100 % to production deployment pods (Vnext of App) , 0% to canary deployment pods, and 0 replicas of canary deployment
 
-## Repository structure:
-* productpage folder contains
-  * source code of the [python application](./productpage/productpage.py) (taken from istio docs)
-  * [./productpage/Dockerfile](./productpage/Dockerfile) which is the dockerfile to dockerize the application
-  * The [./productpage/chart/productpage](./productpage/chart/productpage) folder contains the helm chart which includes the kubernetes and istio resources
-* [./helm-commands.sh](helm-commands.sh) : has the helm command for each stage, including rollback command and helm template command
-* helm-template-output.yaml : contains the kubernetes resources generated using the sample helm command
-
-
-
-

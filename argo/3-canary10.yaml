@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: productpage-helm
+  namespace: argocd
+spec:
+  destination:
+    namespace: bookinfo-k8s-helm-istio-canary
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: productpage/chart/productpage
+    repoURL: 'https://github.com/ably77/productpage-helm'
+    targetRevision: HEAD
+    helm:
+      parameters:
+      # istio vs parameter overrides
+      - name: virtualService.host
+        value: '''*'''
+      # production parameter overrides
+      - name: productionDeployment.image.repository
+        value: ably77/bookinfo-canary
+      - name: productionDeployment.image.tag
+        value: '1'
+      - name: productionDeployment.replicaCount
+        value: '2'
+      - name: productionDeployment.weight
+        value: '90'
+      # canary parameter overrides
+      - name: canaryDeployment.image.repository
+        value: ably77/bookinfo-canary
+      - name: canaryDeployment.image.tag
+        value: '2'
+      - name: canaryDeployment.replicaCount
+        value: '2'
+      - name: canaryDeployment.weight
+        value: '10'
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    #syncOptions:
+    #  - CreateNamespace=true

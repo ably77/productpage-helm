@@ -14,8 +14,8 @@ productionDeployment:
   replicaCount: 2
   weight: 100
   image:
-    repository: myacrepo.azurecr.io/bookinfo/productpage
-    tag: 83
+    repository: ably77/bookinfo-canary
+    tag: 1
     pullPolicy: IfNotPresent
 
 
@@ -23,8 +23,8 @@ canaryDeployment:
   replicaCount: 0
   weight: 0
   image:
-    repository: myacrepo.azurecr.io/bookinfo/productpage
-    tag: 83
+    repository: ably77/bookinfo-canary
+    tag: 2
     pullPolicy: IfNotPresent
 
 
